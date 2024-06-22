@@ -2,36 +2,41 @@
   {
     "icon": "Blog",
     "name": "博客",
-    "link": "https://blog.imsyy.top/"
+    "link": "https://blog.kylelv.com/"
   },
   {
-    "icon": "Cloud",
-    "name": "网盘",
-    "link": "https://pan.imsyy.top/"
+    "icon": "Person32Filled",
+    "name": "学术主页(TBD)",
+    "link": "https://blog.kylelv.com/"
   },
   {
-    "icon": "CompactDisc",
-    "name": "音乐",
-    "link": "https://music.imsyy.top/"
+    "icon": "ChatBubblesQuestion24Filled",
+    "name": "ChatGPT",
+    "link": "https://mychat.kylelv.com/"
   },
   {
-    "icon": "Compass",
-    "name": "起始页",
-    "link": "https://nav.imsyy.top/"
+    "icon": "BookOpen",
+    "name": "阅读",
+    "link": "https://reader.kylelv.com/"
+  },
+  {
+    "icon": "LiveTvFilled",
+    "name": "影音",
+    "link": "https://v.kylelv.com/"
   },
   {
     "icon": "Book",
     "name": "网址集",
-    "link": "https://web.imsyy.top/"
+    "link": "https://web.kylelv.com/"
   },
   {
-    "icon": "Fire",
-    "name": "今日热榜",
-    "link": "https://hot.imsyy.top/"
+    "icon": "ApiApp",
+    "name": "OneAPI",
+    "link": "https://oneapi.kylelv.com/"
   },
   {
-    "icon": "LaptopCode",
-    "name": "站点监测",
-    "link": "https://status.imsyy.top/"
+    "icon": "DownloadSharp",
+    "name": "qBittorrent",
+    "link": "https://qb.kylelv.com/"
   }
 ]

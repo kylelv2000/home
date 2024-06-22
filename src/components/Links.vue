@@ -43,7 +43,11 @@
 <script setup>
 import { Icon } from "@vicons/utils";
 // 可前往 https://www.xicons.org 自行挑选并在此处引入
-import { Link, Blog, CompactDisc, Cloud, Compass, Book, Fire, LaptopCode } from "@vicons/fa"; // 注意使用正确的类别
+import { Link, Blog, CompactDisc, Cloud, Compass, Book, Fire, LaptopCode,BookOpen } from "@vicons/fa"; // 注意使用正确的类别
+import { DownloadSharp, LiveTvFilled } from "@vicons/material"; 
+import { ApiApp } from "@vicons/tabler"; 
+import { ChatBubblesQuestion24Filled, Person32Filled } from "@vicons/fluent"; 
+
 import { mainStore } from "@/store";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { Pagination, Mousewheel } from "swiper/modules";
@@ -70,6 +74,12 @@ const siteIcon = {
   Book,
   Fire,
   LaptopCode,
+  BookOpen,
+  LiveTvFilled,
+  ChatBubblesQuestion24Filled,
+  ApiApp,
+  DownloadSharp,
+  Person32Filled,
 };
 
 // 链接跳转
