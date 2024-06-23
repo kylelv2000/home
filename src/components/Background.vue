@@ -34,19 +34,34 @@ const emit = defineEmits(["loadComplete"]);
 
 // 壁纸随机数
 // 请依据文件夹内的图片个数修改 Math.random() 后面的第一个数字
-const bgRandom = Math.floor(Math.random() * 8 + 1);
+const bgRandom = Math.floor(Math.random() * 3 + 1);
 
 // 更换壁纸链接
 const changeBg = (type) => {
   if (type == 0) {
-    bgUrl.value = `/images/background${bgRandom}.jpg`;
+    const hour = new Date().getHours();
+    var bgType = 1;
+    if (hour < 6) {         //凌晨0
+      bgType = 0;
+    } else if (hour < 9) {  //早上1
+      bgType = 1;
+    } else if (hour < 16) { //白天1/2
+      bgType = Math.floor(Math.random() * 2 + 1);
+    } else if (hour < 20) { //傍晚3
+      bgType = 3;
+    } else {                //半夜4
+      bgType = 4;
+    }
+    bgUrl.value = `/images/background${bgType}${bgRandom}.jpg`;
   } else if (type == 1) {
     bgUrl.value = "https://api.dujin.org/bing/1920.php";
   } else if (type == 2) {
     bgUrl.value = "https://api.vvhan.com/api/wallpaper/views";
   } else if (type == 3) {
     bgUrl.value = "https://api.vvhan.com/api/wallpaper/acg";
-  }
+  } else if (type == 4 && store.customUrl) {
+      bgUrl.value = store.customUrl;
+    }
 };
 
 // 图片加载完成
@@ -76,14 +91,18 @@ const imgLoadError = () => {
       fill: "#efefef",
     }),
   });
-  bgUrl.value = `/images/background${bgRandom}.jpg`;
+  bgUrl.value = `/images/background2${bgRandom}.jpg`;
 };
 
 // 监听壁纸切换
 watch(
-  () => store.coverType,
-  (value) => {
-    changeBg(value);
+  () => [store.coverType, store.customUrl],
+  ([value, customUrl]) => {
+    if (value == 4 && customUrl) {
+      bgUrl.value = customUrl;
+    } else {
+      changeBg(value);
+    }
   },
 );
 

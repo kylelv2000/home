@@ -8,7 +8,11 @@
             <el-radio value="1" size="large" border>每日一图</el-radio>
             <el-radio value="2" size="large" border>随机风景</el-radio>
             <el-radio value="3" size="large" border>随机动漫</el-radio>
+            <el-radio value="4" size="large" border>
+              <el-input v-model="customUrl" placeholder="指定壁纸URL"  />
+            </el-radio>
           </el-radio-group>
+          
         </div>
       </el-collapse-item>
       <el-collapse-item title="个性化调整" name="2">
@@ -94,6 +98,7 @@ import { storeToRefs } from "pinia";
 const store = mainStore();
 const {
   coverType,
+  customUrl,
   siteStartShow,
   musicClick,
   playerLrcShow,
@@ -192,6 +197,14 @@ const radioChange = () => {
               & + .el-radio__label {
                 color: #fff !important;
               }
+            }
+            .el-input {
+              width: 100%; // 例如，让输入框宽度占满容器
+              margin-top: 2px; // 调整输入框与上方元素的间距
+              margin-bottom: 2px;
+              border-radius: 5px;
+              background-color: transparent; // 设置外部背景颜色为透明
+              border: 1px solid #cccccc;  
             }
           }
         }
