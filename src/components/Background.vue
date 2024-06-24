@@ -60,8 +60,8 @@ const changeBg = (type) => {
   } else if (type == 3) {
     bgUrl.value = "https://api.vvhan.com/api/wallpaper/acg";
   } else if (type == 4 && store.customUrl) {
-      bgUrl.value = store.customUrl;
-    }
+    bgUrl.value = store.customUrl;
+  }
 };
 
 // 图片加载完成
