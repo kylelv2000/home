@@ -10,9 +10,9 @@
     "link": "https://blog.kylelv.com/"
   },
   {
-    "icon": "ChatBubblesQuestion24Filled",
-    "name": "NextChat",
-    "link": "https://mychat.kylelv.com/"
+    "icon": "Book",
+    "name": "网址集",
+    "link": "https://web.kylelv.com/"
   },
   {
     "icon": "BookOpen",
@@ -25,18 +25,8 @@
     "link": "https://v.kylelv.com/"
   },
   {
-    "icon": "Book",
-    "name": "网址集",
-    "link": "https://web.kylelv.com/"
-  },
-  {
     "icon": "ApiApp",
     "name": "OneAPI",
     "link": "https://oneapi.kylelv.com/"
-  },
-  {
-    "icon": "DownloadSharp",
-    "name": "qBittorrent",
-    "link": "https://qb.kylelv.com/"
   }
 ]
