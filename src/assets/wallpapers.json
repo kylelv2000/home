@@ -1,0 +1,196 @@
+[
+  {
+    "file": "platform-dawn",
+    "period": "dawn",
+    "weather": "cloudy",
+    "title": "对面站台",
+    "bright": true
+  },
+  {
+    "file": "platform-night",
+    "period": "night",
+    "weather": "cloudy",
+    "title": "夜色沿轨"
+  },
+  {
+    "file": "seawall-day",
+    "period": "day",
+    "weather": "clear",
+    "title": "一截风筝线",
+    "bright": true
+  },
+  {
+    "file": "seawall-blue-rain",
+    "period": "blue",
+    "weather": "rain",
+    "title": "雨后的风筝线"
+  },
+  {
+    "file": "cloud-terrace-dawn",
+    "period": "dawn",
+    "weather": "clear",
+    "title": "微光与伞",
+    "bright": true
+  },
+  {
+    "file": "cloud-terrace-day",
+    "period": "day",
+    "weather": "clear",
+    "title": "白云露台",
+    "bright": true
+  },
+  {
+    "file": "terrace-cloudy-day",
+    "period": "day",
+    "weather": "cloudy",
+    "title": "青色云台",
+    "bright": true
+  },
+  {
+    "file": "cloud-terrace-sunset",
+    "period": "sunset",
+    "weather": "clear",
+    "title": "粉橙晚霞",
+    "bright": true
+  },
+  {
+    "file": "cloud-terrace-blue-rain",
+    "period": "blue",
+    "weather": "rain",
+    "title": "雨后云台",
+    "bright": true
+  },
+  {
+    "file": "cloud-terrace-night",
+    "period": "night",
+    "weather": "clear",
+    "title": "月下云影"
+  },
+  {
+    "file": "bridge-dawn-cloud",
+    "period": "dawn",
+    "weather": "cloudy",
+    "title": "阴天清晨"
+  },
+  {
+    "file": "bridge-blue-fair",
+    "period": "blue",
+    "weather": "clear",
+    "title": "桥灯初上"
+  },
+  {
+    "file": "bridge-blue-rain",
+    "period": "blue",
+    "weather": "rain",
+    "title": "雨后河桥"
+  },
+  {
+    "file": "lake-dawn-fair",
+    "period": "dawn",
+    "weather": "clear",
+    "title": "湖上晨雾",
+    "bright": true
+  },
+  {
+    "file": "lake-day-rain",
+    "period": "day",
+    "weather": "rain",
+    "title": "山湖雨后"
+  },
+  {
+    "file": "lake-sunset-fair",
+    "period": "sunset",
+    "weather": "clear",
+    "title": "湖谷暮色"
+  },
+  {
+    "file": "lake-night-fair",
+    "period": "night",
+    "weather": "clear",
+    "title": "静湖星夜"
+  },
+  {
+    "file": "meadow-day-fair",
+    "period": "day",
+    "weather": "clear",
+    "title": "草坡与自行车",
+    "bright": true
+  },
+  {
+    "file": "meadow-sunset-fair",
+    "period": "sunset",
+    "weather": "clear",
+    "title": "护栏和晚霞",
+    "bright": true
+  },
+  {
+    "file": "stars-coast",
+    "period": "night",
+    "weather": "clear",
+    "title": "潮池、行人与狗"
+  },
+  {
+    "file": "stars-crescent",
+    "period": "night",
+    "weather": "clear",
+    "title": "月牙草地"
+  },
+  {
+    "file": "pines-dawn-cloud",
+    "period": "dawn",
+    "weather": "cloudy",
+    "title": "远山松林",
+    "bright": true
+  },
+  {
+    "file": "bridge-day-fair",
+    "period": "day",
+    "weather": "clear",
+    "title": "河桥晴昼",
+    "bright": true
+  },
+  {
+    "file": "bridge-sunset-fair",
+    "period": "sunset",
+    "weather": "clear",
+    "title": "水上晚霞"
+  },
+  {
+    "file": "bridge-night-fair",
+    "period": "night",
+    "weather": "clear",
+    "title": "独灯深夜"
+  },
+  {
+    "file": "lake-day-fair",
+    "period": "day",
+    "weather": "clear",
+    "title": "湖岸晴日",
+    "bright": true
+  },
+  {
+    "file": "lake-blue-fair",
+    "period": "blue",
+    "weather": "clear",
+    "title": "暮蓝静湖"
+  },
+  {
+    "file": "meadow-dawn-fair",
+    "period": "dawn",
+    "weather": "clear",
+    "title": "草坡晨露",
+    "bright": true
+  },
+  {
+    "file": "meadow-blue-cloud",
+    "period": "blue",
+    "weather": "cloudy",
+    "title": "蓝调草坡"
+  },
+  {
+    "file": "meadow-night-fair",
+    "period": "night",
+    "weather": "clear",
+    "title": "星下草坡"
+  }
+]

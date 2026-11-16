@@ -1,7 +1,7 @@
 <template>
-  <div :class="store.mobileOpenState ? 'right' : 'right hidden'">
+  <div id="mobile-sites" :class="store.mobileOpenState ? 'right' : 'right hidden'">
     <!-- 移动端 Logo -->
-    <div class="logo text-hidden" @click="store.mobileFuncState = !store.mobileFuncState">
+    <div class="logo">
       <span class="bg">{{ siteUrl[0] }}</span>
       <span class="sm">.{{ siteUrl[1] }}</span>
     </div>
@@ -37,32 +37,25 @@ const siteUrl = computed(() => {
   width: 50%;
   margin-left: 0.75rem;
   .logo {
-    width: 100%;
-    font-family: "Pacifico-Regular";
-    font-size: 2.25rem;
-    position: fixed;
-    top: 6%;
-    left: 0;
-    text-align: center;
-    transition: transform 0.3s;
-    animation: fade 0.5s;
-    &:active {
-      transform: scale(0.95);
-    }
-    @media (min-width: 721px) {
-      display: none;
-    }
-    @media (max-height: 720px) {
-      width: calc(100% + 6px);
-      top: 43.26px; // 721px * 0.06
-    }
-    @media (max-width: 390px) {
-        width: 391px;
-    }
+    display: none;
   }
   @media (max-width: 720px) {
     margin-left: 0;
     width: 100%;
+    max-width: 460px;
+
+    .logo {
+      display: block;
+      margin: 0 auto 1.25rem;
+      font: 2.25rem "Pacifico-Regular";
+      text-align: center;
+
+      @media (max-height: 660px) {
+        margin-bottom: 0.75rem;
+        font-size: 1.9rem;
+      }
+    }
+
     &.hidden {
       display: none;
     }

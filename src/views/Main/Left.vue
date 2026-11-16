@@ -24,6 +24,8 @@ const store = mainStore();
   @media (max-width: 720px) {
     margin-right: 0;
     width: 100%;
+    max-width: 460px;
+    transform: none;
   }
 }
 </style>

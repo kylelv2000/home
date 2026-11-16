@@ -17,14 +17,19 @@
         </section>
       </div>
       <!-- 移动端菜单按钮 -->
-      <Icon
+      <button
+        type="button"
         class="menu"
-        size="24"
         v-show="!store.backgroundShow"
+        aria-controls="mobile-sites"
+        :aria-expanded="store.mobileOpenState"
         @click="store.mobileOpenState = !store.mobileOpenState"
       >
-        <component :is="store.mobileOpenState ? CloseSmall : HamburgerButton" />
-      </Icon>
+        <Icon size="18" aria-hidden="true">
+          <component :is="store.mobileOpenState ? CloseSmall : HamburgerButton" />
+        </Icon>
+        {{ store.mobileOpenState ? "返回主页" : "网站列表" }}
+      </button>
       <!-- 页脚 -->
       <Transition name="fade" mode="out-in">
         <Footer class="f-ter" v-show="!store.backgroundShow && !store.setOpenState" />
@@ -167,88 +172,80 @@ onBeforeUnmount(() => {
     }
   }
   .menu {
-    position: absolute;
+    display: none;
+  }
+  @media (min-width: 721px) and (max-height: 720px) {
+    overflow: hidden auto;
+
+    .container {
+      min-height: calc(100% - 46px);
+      height: auto;
+      display: flex;
+
+      .all {
+        height: auto;
+        padding-block: 0.75rem;
+      }
+    }
+
+    .f-ter {
+      position: relative;
+    }
+  }
+
+  @media (max-width: 720px) {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 84%;
-    left: calc(50% - 28px);
-    width: 56px;
-    height: 34px;
-    background: rgb(0 0 0 / 20%);
-    backdrop-filter: blur(10px);
-    border-radius: 6px;
-    transition: transform 0.3s;
-    animation: fade 0.5s;
-    &:active {
-      transform: scale(0.95);
-    }
-    .i-icon {
-      transform: translateY(2px);
-    }
-    @media (min-width: 721px) {
-      display: none;
-    }
-  }
-  @media (max-height: 720px) {
-    overflow-y: auto;
-    overflow-x: hidden;
+    flex-direction: column;
+    overflow: hidden auto;
+
     .container {
-      height: 721px;
-      .more {
-        height: 721px;
-        width: calc(100% + 6px);
-      }
-      @media (min-width: 391px) {
-        // w 1201px ~ max
-        padding-left: 0.7vw;
-        padding-right: 0.25vw;
-        @media (max-width: 1200px) { // w 1101px ~ 1280px
-          padding-left: 2.3vw;
-          padding-right: 1.75vw;
-        }
-        @media (max-width: 1100px) { // w 993px ~ 1100px
-          padding-left: 2vw;
-          padding-right: calc(2vw - 6px);
-        }
-        @media (max-width: 992px) { // w 901px ~ 992px
-          padding-left: 2.3vw;
-          padding-right: 1.7vw;
-        }
-        @media (max-width: 900px) { // w 391px ~ 900px
-          padding-left: 2vw;
-          padding-right: calc(2vw - 6px);
-        }
+      flex: 1 0 auto;
+      height: auto;
+      display: flex;
+      padding: 0 clamp(16px, 5vw, 36px);
+
+      .all {
+        min-height: 100%;
+        height: auto;
+        padding: 2rem 0 1.25rem;
       }
     }
+
     .menu {
-      top: 605.64px; // 721px * 0.84
-      left: 170.5px; // 391 * 0.5 - 25px
-      @media (min-width: 391px) {
-        left: calc(50% - 25px);
+      align-self: center;
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-height: 44px;
+      margin: 0 0 1rem;
+      padding: 0 1rem;
+      color: inherit;
+      font: inherit;
+      background: var(--link-fill);
+      backdrop-filter: var(--card-blur);
+      border: 1px solid rgb(255 255 255 / 13%);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    @media (max-height: 660px) {
+      .container .all {
+        padding: 1rem 0 0.625rem;
+      }
+      .menu {
+        margin-bottom: 0.625rem;
       }
     }
+
     .f-ter {
-      top: 675px; // 721px - 46px
-      @media (min-width: 391px) {
-        padding-left: 6px;
-      }
+      position: relative;
+      flex: 0 0 auto;
+      height: auto;
+      min-height: 46px;
+      padding-bottom: env(safe-area-inset-bottom);
     }
   }
-  @media (max-width: 390px) {
-    overflow-x: auto;
-    .container {
-      width: 391px;
-    }
-    .menu {
-      left: 167.5px; // 391px * 0.5 - 28px
-    }
-    .f-ter {
-      width: 391px;
-    }
-    @media (min-height: 721px) {
-      overflow-y: hidden;
-    }
-  }
+
 }
 </style>

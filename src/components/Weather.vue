@@ -19,6 +19,7 @@
 
 <script setup>
 import { getAdcode, getWeather, getOtherWeather } from "@/api";
+import { rememberWallpaperWeather } from "@/utils/wallpaper";
 import { Error } from "@icon-park/vue-next";
 
 // 高德开发者 Key
@@ -89,6 +90,7 @@ const getWeatherData = async () => {
         windpower: result.lives[0].windpower,
       };
     }
+    rememberWallpaperWeather(weatherData.weather.weather);
   } catch (error) {
     console.error("天气信息获取失败:" + error);
     onError("天气信息获取失败");

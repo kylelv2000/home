@@ -146,8 +146,8 @@ watch(
 .music {
   width: 100%;
   height: 100%;
-  background: #00000040;
-  backdrop-filter: blur(10px);
+  background: var(--card-fill);
+  backdrop-filter: var(--card-blur);
   border-radius: 6px;
   padding: 20px;
   display: flex;

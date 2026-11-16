@@ -1,6 +1,6 @@
 <template>
   <!-- 功能区域 -->
-  <div :class="store.mobileFuncState ? 'function mobile' : 'function'">
+  <div class="function">
     <el-row :gutter="20">
       <el-col :span="12">
         <div class="left">
@@ -30,12 +30,9 @@
 
 <script setup>
 import { getCurrentTime } from "@/utils/getTime";
-import { mainStore } from "@/store";
 import Music from "@/components/Music.vue";
 import Hitokoto from "@/components/Hitokoto.vue";
 import Weather from "@/components/Weather.vue";
-
-const store = mainStore();
 
 // 当前时间
 const currentTime = ref({});
@@ -66,39 +63,19 @@ onBeforeUnmount(() => {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  &.mobile {
-    .el-row {
-      .el-col {
-        &:nth-of-type(1) {
-          display: contents;
-        }
-        &:nth-of-type(2) {
-          display: none;
-        }
-      }
-    }
-  }
   .el-row {
     height: 100%;
     width: 100%;
     margin: 0 !important;
     .el-col {
+      min-width: 0;
+      height: 100%;
+
       &:nth-of-type(1) {
         padding-left: 0 !important;
       }
       &:nth-of-type(2) {
         padding-right: 0 !important;
-      }
-      @media (max-width: 910px) {
-        &:nth-of-type(1) {
-          display: none;
-        }
-        &:nth-of-type(2) {
-          padding: 0 !important;
-          flex: none;
-          max-width: none;
-          width: 100%;
-        }
       }
     }
     .left,
@@ -143,6 +120,57 @@ onBeforeUnmount(() => {
         text-overflow: ellipsis;
         overflow-x: hidden;
         white-space: nowrap;
+      }
+    }
+  }
+
+  @media (max-width: 910px) {
+    .el-row .el-col {
+      &:nth-of-type(1) {
+        padding-right: 5px !important;
+      }
+      &:nth-of-type(2) {
+        padding-left: 5px !important;
+      }
+    }
+
+    .el-row .right {
+      padding: 12px 8px;
+
+      .time {
+        font-size: 0.875rem;
+
+        .text {
+          font-size: clamp(1.9rem, 4vw, 2.6rem);
+          letter-spacing: 1px;
+        }
+      }
+
+      .weather {
+        font-size: 0.8125rem;
+      }
+    }
+
+    :deep(.sm-hidden) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 720px) and (max-height: 660px),
+    (min-width: 721px) and (max-height: 560px) {
+    height: 124px;
+
+    .el-row .time .text {
+      margin-top: 6px;
+    }
+  }
+
+  @media (min-width: 911px) and (max-height: 560px) {
+    .el-row .right {
+      padding-block: 12px;
+
+      .time .text {
+        font-size: 2.6rem;
       }
     }
   }

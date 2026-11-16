@@ -12,30 +12,33 @@
       :modules="[Pagination, Mousewheel]"
       :slides-per-view="1"
       :space-between="40"
-      :pagination="{
+      :pagination="siteLinksList.length > 1 && {
         el: '.swiper-pagination',
         clickable: true,
         bulletElement: 'div',
       }"
-      :mousewheel="true"
+      :mousewheel="siteLinksList.length > 1"
     >
       <SwiperSlide v-for="site in siteLinksList" :key="site">
         <el-row class="link-all" :gutter="20">
           <el-col v-for="(item, index) in site" :span="8" :key="item">
-            <div
+            <a
               class="item cards"
+              :href="item.link"
+              target="_blank"
+              rel="noopener"
               :style="index < 3 ? 'margin-bottom: 20px' : null"
-              @click="jumpLink(item)"
+              @click="maybeOpenMusic($event, item)"
             >
               <Icon size="26">
                 <component :is="siteIcon[item.icon]" />
               </Icon>
-              <span class="name text-hidden">{{ item.name }}</span>
-            </div>
+              <span class="name">{{ item.name }}</span>
+            </a>
           </el-col>
         </el-row>
       </SwiperSlide>
-      <div class="swiper-pagination" />
+      <div v-if="siteLinksList.length > 1" class="swiper-pagination" />
     </Swiper>
   </div>
 </template>
@@ -83,11 +86,10 @@ const siteIcon = {
 };
 
 // 链接跳转
-const jumpLink = (data) => {
-  if (data.name === "音乐" && store.musicClick) {
-    if (typeof $openList === "function") $openList();
-  } else {
-    window.open(data.link, "_blank");
+const maybeOpenMusic = (event, data) => {
+  if (data.name === "音乐" && store.musicClick && typeof $openList === "function") {
+    event.preventDefault();
+    $openList();
   }
 };
 
@@ -144,6 +146,7 @@ onMounted(() => {
   .link-all {
     height: 220px;
     .item {
+      background-color: var(--link-fill);
       height: 100px;
       width: 100%;
       display: flex;
@@ -154,6 +157,8 @@ onMounted(() => {
       animation: fade 0.5s;
 
       &:hover {
+        color: inherit;
+        text-decoration: none;
         transform: scale(1.02);
         background: rgb(0 0 0 / 40%);
         transition: 0.3s;
@@ -166,19 +171,21 @@ onMounted(() => {
       .name {
         font-size: 1.1rem;
         margin-left: 8px;
+        text-align: center;
+        line-height: 1.25;
       }
-      @media (min-width: 720px) and (max-width: 820px) {
-        .name {
-          display: none;
-        }
+
+      &:focus-visible {
+        outline: 2px solid rgb(255 255 255 / 75%);
+        outline-offset: -2px;
       }
       @media (max-width: 720px) {
         height: 80px;
       }
-      @media (max-width: 460px) {
+      @media (max-width: 460px), (min-width: 721px) and (max-width: 820px) {
         flex-direction: column;
         .name {
-          font-size: 1rem;
+          font-size: 0.875rem;
           margin-left: 0;
           margin-top: 8px;
         }
@@ -186,6 +193,20 @@ onMounted(() => {
     }
     @media (max-width: 720px) {
       height: 180px;
+    }
+  }
+
+  @media (max-width: 720px) and (max-height: 660px),
+    (min-width: 721px) and (max-height: 560px) {
+    .line {
+      margin: 1rem 0.25rem 0.625rem;
+    }
+    .link-all {
+      height: 148px;
+
+      .item {
+        height: 64px;
+      }
     }
   }
 }

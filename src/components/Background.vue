@@ -1,21 +1,22 @@
 <template>
-  <div :class="store.backgroundShow ? 'cover show' : 'cover'">
+  <div class="cover" :class="{ show: store.backgroundShow, bright: brightWallpaper }">
     <img
       v-show="store.imgLoadStatus"
       :src="bgUrl"
       class="bg"
-      alt="cover"
+      alt=""
       @load="imgLoadComplete"
-      @error.once="imgLoadError"
+      @error="imgLoadError"
       @animationend="imgAnimationEnd"
     />
-    <div :class="store.backgroundShow ? 'gray hidden' : 'gray'" />
+    <div class="gray" :class="{ hidden: store.backgroundShow }" />
     <Transition name="fade" mode="out-in">
       <a
-        v-if="store.backgroundShow && store.coverType != '3'"
+        v-if="store.backgroundShow && bgUrl && store.coverType != '3'"
         class="down"
         :href="bgUrl"
         target="_blank"
+        rel="noopener"
       >
         下载壁纸
       </a>
@@ -26,33 +27,36 @@
 <script setup>
 import { mainStore } from "@/store";
 import { Error } from "@icon-park/vue-next";
+import wallpapers from "@/assets/wallpapers.json";
+import { pickWallpaper, readWallpaperWeather, wallpaperResolution } from "@/utils/wallpaper";
 
 const store = mainStore();
 const bgUrl = ref(null);
+const brightWallpaper = ref(false);
+let selectedWallpaper;
 const imgTimeout = ref(null);
 const emit = defineEmits(["loadComplete"]);
 
-// 壁纸随机数
-// 请依据文件夹内的图片个数修改 Math.random() 后面的第一个数字
-const bgRandom = Math.floor(Math.random() * 3 + 1);
+// 默认壁纸失败时，沿用模板随附的 JPG。
+const legacyWallpaper = `/images/background2${Math.floor(Math.random() * 3 + 1)}.jpg`;
 
-// 更换壁纸链接
+const updateWallpaperSize = () => {
+  if (!selectedWallpaper) return;
+  const size = wallpaperResolution(window.innerWidth, window.innerHeight, window.devicePixelRatio);
+  bgUrl.value = `/images/wallpapers-v1/${size}/${selectedWallpaper.file}.webp`;
+};
+
 const changeBg = (type) => {
+  brightWallpaper.value = false;
+  selectedWallpaper = undefined;
   if (type == 0) {
-    const hour = new Date().getHours();
-    var bgType = 1;
-    if (hour < 6) {         //凌晨0
-      bgType = 0;
-    } else if (hour < 9) {  //早上1
-      bgType = 1;
-    } else if (hour < 16) { //白天1/2
-      bgType = Math.floor(Math.random() * 2 + 1);
-    } else if (hour < 20) { //傍晚3
-      bgType = 3;
-    } else {                //半夜4
-      bgType = 4;
+    selectedWallpaper = pickWallpaper(wallpapers, new Date(), readWallpaperWeather());
+    if (!selectedWallpaper) {
+      bgUrl.value = legacyWallpaper;
+      return;
     }
-    bgUrl.value = `/images/background${bgType}${bgRandom}.jpg`;
+    brightWallpaper.value = Boolean(selectedWallpaper.bright);
+    updateWallpaperSize();
   } else if (type == 1) {
     bgUrl.value = "https://api.dujin.org/bing/1920.php";
   } else if (type == 2) {
@@ -66,6 +70,7 @@ const changeBg = (type) => {
 
 // 图片加载完成
 const imgLoadComplete = () => {
+  if (store.imgLoadStatus) return;
   imgTimeout.value = setTimeout(
     () => {
       store.setImgLoadStatus(true);
@@ -83,6 +88,15 @@ const imgAnimationEnd = () => {
 
 // 图片显示失败
 const imgLoadError = () => {
+  if (!bgUrl.value) return;
+  if (bgUrl.value === legacyWallpaper) {
+    bgUrl.value = null;
+    store.setImgLoadStatus(true);
+    emit("loadComplete");
+    return;
+  }
+  brightWallpaper.value = false;
+  selectedWallpaper = undefined;
   console.error("壁纸加载失败：", bgUrl.value);
   ElMessage({
     message: "壁纸加载失败，已临时切换回默认",
@@ -91,27 +105,23 @@ const imgLoadError = () => {
       fill: "#efefef",
     }),
   });
-  bgUrl.value = `/images/background2${bgRandom}.jpg`;
+  bgUrl.value = legacyWallpaper;
 };
 
 // 监听壁纸切换
 watch(
   () => [store.coverType, store.customUrl],
-  ([value, customUrl]) => {
-    if (value == 4 && customUrl) {
-      bgUrl.value = customUrl;
-    } else {
-      changeBg(value);
-    }
-  },
+  ([value]) => changeBg(value),
 );
 
 onMounted(() => {
   // 加载壁纸
   changeBg(store.coverType);
+  window.addEventListener("resize", updateWallpaperSize);
 });
 
 onBeforeUnmount(() => {
+  window.removeEventListener("resize", updateWallpaperSize);
   clearTimeout(imgTimeout.value);
 });
 </script>
@@ -128,6 +138,9 @@ onBeforeUnmount(() => {
 
   &.show {
     z-index: 1;
+  }
+  &.bright .gray {
+    background-color: rgb(15 27 43 / 16%);
   }
 
   .bg {

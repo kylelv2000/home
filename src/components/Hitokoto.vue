@@ -124,5 +124,24 @@ onMounted(() => {
       font-size: 1.1rem;
     }
   }
+
+  @media (max-width: 910px), (max-height: 560px) {
+    padding: 12px;
+
+    .content {
+      .text,
+      .from {
+        font-size: 0.875rem;
+      }
+
+      .from {
+        max-width: 100%;
+        margin-top: 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
 }
 </style>
