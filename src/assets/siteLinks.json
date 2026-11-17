@@ -1,32 +1,11 @@
 [
-  {
-    "icon": "Blog",
-    "name": "博客",
-    "link": "https://blog.kylelv.com/"
-  },
-  {
-    "icon": "Person32Filled",
-    "name": "学术主页(TBD)",
-    "link": "https://blog.kylelv.com/"
-  },
-  {
-    "icon": "Book",
-    "name": "网址集",
-    "link": "https://web.kylelv.com/"
-  },
-  {
-    "icon": "BookOpen",
-    "name": "阅读",
-    "link": "https://reader.kylelv.com/"
-  },
-  {
-    "icon": "LiveTvFilled",
-    "name": "影音",
-    "link": "https://v.kylelv.com/"
-  },
-  {
-    "icon": "ApiApp",
-    "name": "OneAPI",
-    "link": "https://oneapi.kylelv.com/"
-  }
+  {"icon": "News", "name": "个人博客", "link": "https://blog.kylelv.com/"},
+  {"icon": "Compass", "name": "网址导航", "link": "https://web.kylelv.com/"},
+  {"icon": "Book2", "name": "在线阅读", "link": "https://reader.kylelv.com/"},
+  {"icon": "DeviceTv", "name": "影视播放", "link": "https://v.kylelv.com/"},
+  {"icon": "ApiApp", "name": "接口管理", "link": "https://oneapi.kylelv.com/"},
+  {"icon": "Activity", "name": "服务器监控", "link": "https://nazha.kylelv.com/"},
+  {"icon": "Receipt", "name": "订阅管理", "link": "https://wallos.kylelv.com/"},
+  {"icon": "Movie", "name": "影视管理", "link": "https://mp.kylelv.com/"},
+  {"icon": "Lock", "name": "密码库", "link": "https://vault.kylelv.com/"}
 ]

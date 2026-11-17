@@ -1,116 +1,157 @@
 <template>
-  <div class="weather" v-if="weatherData.adCode.city && weatherData.weather.weather">
-    <span>{{ weatherData.adCode.city }}&nbsp;</span>
-    <span>{{ weatherData.weather.weather }}&nbsp;</span>
-    <span>{{ weatherData.weather.temperature }}℃</span>
-    <span class="sm-hidden">
-      &nbsp;{{
-        weatherData.weather.winddirection?.endsWith("风")
-          ? weatherData.weather.winddirection
-          : weatherData.weather.winddirection + "风"
-      }}&nbsp;
-    </span>
-    <span class="sm-hidden">{{ weatherData.weather.windpower }}&nbsp;级</span>
-  </div>
-  <div class="weather" v-else>
-    <span>天气数据获取失败</span>
+  <div class="weather" aria-live="polite">
+    <form v-if="choosingCity" class="city-form" @submit.prevent="saveCity">
+      <div class="city-field">
+        <input
+          v-model.trim="cityName"
+          ref="cityInput"
+          aria-label="天气城市"
+          placeholder="城市名"
+          maxlength="30"
+          :disabled="loading"
+          @keydown.esc="cancelCity"
+        />
+        <button type="submit" :disabled="!cityName || loading">确定</button>
+        <button type="button" :disabled="loading" @click="cancelCity">取消</button>
+      </div>
+      <span v-if="cityError" class="city-error">{{ cityError }}</span>
+    </form>
+    <button v-else-if="weather" type="button" class="weather-action" title="更改天气城市" @click="openCity">
+      <span>{{ weather.city }}&nbsp;</span>
+      <span>{{ weather.description }}&nbsp;</span>
+      <span>{{ weather.temperature }}℃</span>
+      <span v-if="weather.windDirection && weather.windPower" class="sm-hidden">
+        &nbsp;{{ windDirection }}&nbsp;{{ weather.windPower }}&nbsp;级
+      </span>
+    </button>
+    <button v-else-if="missingCity" type="button" class="weather-action" @click="openCity">选择天气城市</button>
+    <span v-else>{{ loading ? "天气加载中…" : "天气暂不可用" }}</span>
   </div>
 </template>
 
 <script setup>
-import { getAdcode, getWeather, getOtherWeather } from "@/api";
+import { findWeatherCity, getLocalWeather } from "@/api/weather";
 import { rememberWallpaperWeather } from "@/utils/wallpaper";
-import { Error } from "@icon-park/vue-next";
 
-// 高德开发者 Key
-const mainKey = import.meta.env.VITE_WEATHER_KEY;
+const key = import.meta.env.VITE_WEATHER_KEY;
+const cityStorageKey = "weather-city";
+const weather = ref(null);
+const loading = ref(true);
+const missingCity = ref(false);
+const choosingCity = ref(false);
+const cityName = ref("");
+const cityError = ref("");
+const cityInput = ref(null);
 
-// 天气数据
-const weatherData = reactive({
-  adCode: {
-    city: null, // 城市
-    adcode: null, // 城市编码
-  },
-  weather: {
-    weather: null, // 天气现象
-    temperature: null, // 实时气温
-    winddirection: null, // 风向描述
-    windpower: null, // 风力级别
-  },
+const windDirection = computed(() => {
+  const direction = weather.value?.windDirection;
+  return direction?.endsWith("风") ? direction : `${direction}风`;
 });
 
-// 取出天气平均值
-const getTemperature = (min, max) => {
-  try {
-    // 计算平均值并四舍五入
-    const average = (Number(min) + Number(max)) / 2;
-    return Math.round(average);
-  } catch (error) {
-    console.error("计算温度出现错误：", error);
-    return "NaN";
-  }
-};
+async function openCity() {
+  cityName.value = weather.value?.city ?? "";
+  cityError.value = "";
+  choosingCity.value = true;
+  await nextTick();
+  cityInput.value?.select();
+}
 
-// 获取天气数据
-const getWeatherData = async () => {
+function cancelCity() {
+  if (!loading.value) choosingCity.value = false;
+}
+
+async function saveCity() {
+  if (loading.value || !cityName.value) return;
+  loading.value = true;
+  cityError.value = "";
   try {
-    // 获取地理位置信息
-    if (!mainKey) {
-      console.log("未配置，使用备用天气接口");
-      const result = await getOtherWeather();
-      console.log(result);
-      const data = result.result;
-      weatherData.adCode = {
-        city: data.city.City || "未知地区",
-        // adcode: data.city.cityId,
-      };
-      weatherData.weather = {
-        weather: data.condition.day_weather,
-        temperature: getTemperature(data.condition.min_degree, data.condition.max_degree),
-        winddirection: data.condition.day_wind_direction,
-        windpower: data.condition.day_wind_power,
-      };
-    } else {
-      // 获取 Adcode
-      const adCode = await getAdcode(mainKey);
-      console.log(adCode);
-      if (adCode.infocode !== "10000") {
-        throw "地区查询失败";
-      }
-      weatherData.adCode = {
-        city: adCode.city,
-        adcode: adCode.adcode,
-      };
-      // 获取天气信息
-      const result = await getWeather(mainKey, weatherData.adCode.adcode);
-      weatherData.weather = {
-        weather: result.lives[0].weather,
-        temperature: result.lives[0].temperature,
-        winddirection: result.lives[0].winddirection,
-        windpower: result.lives[0].windpower,
-      };
+    const code = await findWeatherCity(key, cityName.value);
+    if (!code) {
+      cityError.value = "请填写完整城市名";
+      return;
     }
-    rememberWallpaperWeather(weatherData.weather.weather);
-  } catch (error) {
-    console.error("天气信息获取失败:" + error);
-    onError("天气信息获取失败");
+    weather.value = await getLocalWeather(key, code);
+    rememberWallpaperWeather(weather.value.description);
+    choosingCity.value = false;
+    try {
+      localStorage.setItem(cityStorageKey, code);
+    } catch {
+      // 浏览器可能禁止本地存储。
+    }
+  } catch {
+    cityError.value = "天气暂不可用";
+  } finally {
+    loading.value = false;
   }
-};
+}
 
-// 报错信息
-const onError = (message) => {
-  ElMessage({
-    message,
-    icon: h(Error, {
-      theme: "filled",
-      fill: "#efefef",
-    }),
-  });
-  console.error(message);
-};
-
-onMounted(() => {
-  // 调用获取天气
-  getWeatherData();
+onMounted(async () => {
+  try {
+    let cityCode;
+    try {
+      cityCode = localStorage.getItem(cityStorageKey);
+    } catch {
+      // 浏览器可能禁止本地存储。
+    }
+    weather.value = await getLocalWeather(key, cityCode);
+    missingCity.value = weather.value === null;
+    if (weather.value) rememberWallpaperWeather(weather.value.description);
+  } catch {
+    // 接口失败时保留时钟。
+  } finally {
+    loading.value = false;
+  }
 });
 </script>
+
+<style scoped>
+.weather-action {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: none;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.weather-action:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.city-field {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+}
+
+.city-field input,
+.city-field button {
+  min-width: 0;
+  padding: 3px;
+  border: 1px solid #ffffff50;
+  border-radius: 4px;
+  background: #00000030;
+  font: inherit;
+}
+
+.city-field input {
+  width: 6em;
+}
+
+.city-field input::placeholder {
+  color: #ffffffb0;
+}
+
+.city-field button {
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.city-error {
+  display: block;
+  margin-top: 3px;
+}
+</style>

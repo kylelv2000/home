@@ -92,45 +92,17 @@ docker run -p 12445:12445 -d home
 
 ### 网站链接
 
-在 `src/assets/siteLinks.json` 中可以自定义网站链接（以指向自己的网站）:
+在 `src/assets/siteLinks.json` 中配置网站链接。页面按列表顺序每六个入口分页。
 
 ```json
 {
-  "icon": "Blog",
-  "name": "博客",
-  "link": "https://blog.imsyy.top/"
-},
+  "icon": "News",
+  "name": "个人博客",
+  "link": "https://blog.kylelv.com/"
+}
 ```
 
-其中 `icon` 网站链接的图标可以在 `src/components/Links/index.vue` 中添加:
-
-```js
-// 可前往 https://www.xicons.org 自行挑选并在此处引入
-// 此处引入的是 fa 类型
-import {
-  Link,
-  Blog,
-  CompactDisc,
-  Cloud,
-  Compass,
-  Book,
-  Fire,
-  LaptopCode,
-} from "@vicons/fa";
-
-...
-
-// 网站链接图标
-const siteIcon = {
-  Blog,
-  Cloud,
-  CompactDisc,
-  Compass,
-  Book,
-  Fire,
-  LaptopCode,
-};
-```
+图标使用 Tabler，可在 `src/components/Links.vue` 中导入并加入 `siteIcon`。
 
 ### 社交链接
 
@@ -142,7 +114,7 @@ const siteIcon = {
 
 - 前往 [高德开放平台控制台](https://console.amap.com/dev/index) 创建一个 `Web 服务` 类型的 `Key`，并将 `Key` 填入 `.env` 中的 `VITE_WEATHER_KEY` 中
 
-也可自行更换其他方式
+高德 IP 定位没有返回城市编码时，可在天气卡片里手动选择城市。
 
 ### 音乐
 
@@ -237,7 +209,6 @@ if (type == 0) {
 
 - [韩小韩 WebAPI 接口](https://api.vvhan.com/)
 - [搏天 API](https://api.btstu.cn/doc/sjbz.php)
-- [教书先生 API](https://api.oioweb.cn/doc/weather/GetWeather)
 - [高德开放平台](https://lbs.amap.com/)
 - [Hitokoto 一言](https://hitokoto.cn/)
 
