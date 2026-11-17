@@ -1,6 +1,6 @@
 [
   {"icon": "News", "name": "个人博客", "link": "https://blog.kylelv.com/"},
-  {"icon": "School", "name": "学术主页"},
+  {"icon": "School", "name": "学术主页", "link": "https://me.kylelv.com/"},
   {"icon": "Compass", "name": "网址导航", "link": "https://web.kylelv.com/"},
   {"icon": "Book2", "name": "在线阅读", "link": "https://reader.kylelv.com/"},
   {"icon": "DeviceTv", "name": "影视播放", "link": "https://v.kylelv.com/"},
