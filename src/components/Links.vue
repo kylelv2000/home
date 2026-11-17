@@ -11,22 +11,25 @@
       :mousewheel="pages.length > 1 && { releaseOnEdges: true }"
       :a11y="{ paginationBulletMessage: '第 {{index}} 页' }"
     >
-      <SwiperSlide v-for="page in pages" :key="page[0].link">
+      <SwiperSlide v-for="page in pages" :key="page[0].name">
         <div class="link-all">
-          <a
+          <component
             v-for="item in page"
-            :key="item.link"
+            :is="item.link ? 'a' : 'div'"
+            :key="item.link || item.name"
             class="item cards"
             :href="item.link"
-            target="_blank"
-            rel="noopener"
-            @click="maybeOpenMusic($event, item)"
+            :target="item.link ? '_blank' : undefined"
+            :rel="item.link ? 'noopener' : undefined"
+            :role="item.link ? undefined : 'link'"
+            :aria-disabled="item.link ? undefined : 'true'"
+            @click="item.link && maybeOpenMusic($event, item)"
           >
             <Icon size="24" aria-hidden="true">
               <component :is="siteIcon[item.icon] || Link" />
             </Icon>
             <span class="name">{{ item.name }}</span>
-          </a>
+          </component>
         </div>
       </SwiperSlide>
     </Swiper>
@@ -35,14 +38,14 @@
 
 <script setup>
 import { Icon } from "@vicons/utils";
-import { Activity, ApiApp, News, Book2, Compass, DeviceTv, Link, Lock, Movie, Receipt } from "@vicons/tabler";
+import { Activity, ApiApp, News, Book2, Compass, DeviceTv, Link, Lock, Movie, Receipt, School } from "@vicons/tabler";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { A11y, Mousewheel, Pagination } from "swiper/modules";
 import { mainStore } from "@/store";
 import siteLinks from "@/assets/siteLinks.json";
 
 const store = mainStore();
-const siteIcon = { Activity, ApiApp, News, Book2, Compass, DeviceTv, Lock, Movie, Receipt };
+const siteIcon = { Activity, ApiApp, News, Book2, Compass, DeviceTv, Lock, Movie, Receipt, School };
 const cardsPerPage = 6;
 const pages = [];
 for (let index = 0; index < siteLinks.length; index += cardsPerPage) {
@@ -112,7 +115,13 @@ const maybeOpenMusic = (event, data) => {
       padding: 0 10px;
       animation: fade 0.5s;
 
-      &:hover {
+      &[aria-disabled="true"] {
+        opacity: 0.65;
+        cursor: default;
+        transform: none;
+      }
+
+      &:any-link:hover {
         color: inherit;
         text-decoration: none;
         transform: scale(1.02);
@@ -120,7 +129,7 @@ const maybeOpenMusic = (event, data) => {
         transition: 0.3s;
       }
 
-      &:active {
+      &:any-link:active {
         transform: scale(1);
       }
 
